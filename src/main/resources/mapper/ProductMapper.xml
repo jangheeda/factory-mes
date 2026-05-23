@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mes.factory.mapper.ProductMapper">
+    <select id="selectProductList" resultType="com.mes.factory.dto.ProductDto">
+        SELECT * FROM product ORDER BY created_at DESC
+    </select>
+
+    <select id="selectProductById" resultType="com.mes.factory.dto.ProductDto">
+        SELECT * FROM product WHERE product_id = #{productId}
+    </select>
+
+    <insert id="insertProduct">
+        INSERT INTO product (product_name, product_code, unit)
+        VALUES (#{productName}, #{productCode}, #{unit})
+    </insert>
+
+    <update id="updateProduct">
+        UPDATE product
+        SET product_name = #{productName},
+            product_code = #{productCode},
+            unit = #{unit}
+        WHERE product_id = #{productId}
+    </update>
+
+    <delete id="deleteProduct">
+        DELETE FROM product WHERE product_id = #{productId}
+    </delete>
+
+</mapper>
