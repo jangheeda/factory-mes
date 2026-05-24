@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>작업지시 등록</title>
+</head>
+<body>
+<h1>작업지시 등록</h1>
+
+<!--
+    th:action : 폼 제출 시 POST /workorder/create 로 요청
+    method="post" : 데이터 전송 방식
+-->
+<form th:action="@{/workorder/create}" method="post">
+    <table>
+        <tr>
+            <td>제품 선택</td>
+            <td>
+                <!--
+                    productList : Controller에서 넘겨준 제품 목록
+                    th:each : 목록을 반복해서 option 태그 생성
+                    th:value : 실제 전송되는 값 (product_id)
+                    th:text : 화면에 보이는 값 (제품명)
+                -->
+                <select name="productId">
+                    <option th:each="product : ${productList}"
+                            th:value="${product.productId}"
+                            th:text="${product.productName}">
+                    </option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>목표수량</td>
+            <td><input type="number" name="targetQty" required></td>
+        </tr>
+        <tr>
+            <td>작업일</td>
+            <!-- date 타입 : 날짜 선택 달력 자동 생성 -->
+            <td><input type="date" name="orderDate" required></td>
+        </tr>
+    </table>
+    <br>
+    <button type="submit">저장</button>
+    <a href="/workorder/list">취소</a>
+</form>
+</body>
+</html>
