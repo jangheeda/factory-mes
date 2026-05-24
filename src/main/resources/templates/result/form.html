@@ -1,0 +1,45 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>생산 실적 등록</title>
+</head>
+<body>
+    <h1>생산 실적 등록</h1>
+
+    <form th:action="@{/result/create}" method="post">
+        <table>
+            <tr>
+                <td>작업지시 선택</td>
+                <td>
+                    <select name="orderId" id="">
+                        <option th:each="order : ${workOrderList}"
+                                th:value="${order.orderId}"
+                                th:text="${order.productName} + ' / 목표: ' + ${order.targetQty}">
+                        </option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>불량 수량</td>
+                <td><input type="number" name="defectQty" min="0" value="0"></td>
+            </tr>
+            <tr>
+                <td>작업자</td>
+                <td><input type="text" name="worker"></td>
+            </tr>
+            <tr>
+                <td>실적일</td>
+                <td><input type="date" name="resultDate" required></td>
+            </tr>
+        </table>
+        <br>
+        <button type="submit">저장</button>
+        <a href="/result/list">취소</a>
+    </form>
+
+</body>
+</html>

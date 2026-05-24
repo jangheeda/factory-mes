@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mes.factory.mapper.ProductionResultMapper">
+    <!--
+    work_order, product 테이블을 JOIN 해서
+    제품명, 목표수량까지 한번에 가져온다.
+    -->
+    <select id="selectResultList" resultType="com.mes.factory.dto.ProductionResultDto">
+        SELECT r.*,
+               p.product_name,
+               w.target_qty
+        FROM production_result r
+        JOIN work_order w ON r.order_id = w.order_id
+        JOIN product p ON w.product_id = p.product_id
+        ORDER BY r.created_at DESC
+    </select>
+
+    <select id="selectResultById" resultType="com.mes.factory.dto.ProductionResultDto">
+        SELECT r.*,
+               p.product_name,
+               w.target_qty
+        FROM production_result r
+        JOIN work_order w ON r.order_id = w.order_id
+        JOIN product p ON w.product_id = p.product_id
+        WHERE r.result_id = #{resultId}
+
+    </select>
+
+    <!--
+        실적 등록 시 order_id, good_qty, defect_qty, worker, result_date 입력
+    -->
+    <insert id="insertResult">
+        INSERT INTO production_result (order_id, good_qty, defect_qty, worker, result_date)
+        VALUES (#{orderId}, #{goodQty}, #{defectQty}, #{worker}, #{resultDate})
+    </insert>
+
+    <!--
+        실적 삭제
+    -->
+    <delete id="deleteResult">
+        DELETE FROM production_result WHERE result_id = #{resultId}
+    </delete>
+
+</mapper>
