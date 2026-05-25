@@ -27,6 +27,8 @@ public class ProductionResultService {
         productionResultMapper.insertResult(dto);
     }
 
+    public void updateResult(ProductionResultDto dto) { productionResultMapper.updateResult(dto); }
+
     public void deleteResult(int resultId) {
         productionResultMapper.deleteResult(resultId);
     }

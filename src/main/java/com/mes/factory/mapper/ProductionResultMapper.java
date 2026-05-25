@@ -17,6 +17,9 @@ public interface ProductionResultMapper {
     // 실적 등록
     void insertResult(ProductionResultDto dto);
 
+    // 실적 수정
+    void updateResult(ProductionResultDto dto);
+
     // 실적 삭제
     void deleteResult(int resultId);
 }

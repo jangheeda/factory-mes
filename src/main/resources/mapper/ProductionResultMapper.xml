@@ -24,16 +24,25 @@
         JOIN work_order w ON r.order_id = w.order_id
         JOIN product p ON w.product_id = p.product_id
         WHERE r.result_id = #{resultId}
-
     </select>
 
     <!--
         실적 등록 시 order_id, good_qty, defect_qty, worker, result_date 입력
     -->
     <insert id="insertResult">
-        INSERT INTO production_result (order_id, good_qty, defect_qty, worker, result_date)
-        VALUES (#{orderId}, #{goodQty}, #{defectQty}, #{worker}, #{resultDate})
+        INSERT INTO production_result (order_id, good_qty, defect_qty, defect_type, worker, result_date)
+        VALUES (#{orderId}, #{goodQty}, #{defectQty}, #{defectType}, #{worker}, #{resultDate})
     </insert>
+
+    <update id="updateResult">
+        UPDATE production_result
+        SET good_qty    = #{goodQty},
+            defect_qty  = #{defectQty},
+            defect_type = #{defectType},
+            worker      = #{worker},
+            result_date = #{resultDate}
+        WHERE result_id = #{resultId}
+    </update>
 
     <!--
         실적 삭제

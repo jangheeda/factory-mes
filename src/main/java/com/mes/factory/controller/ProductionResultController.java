@@ -38,6 +38,21 @@ public class ProductionResultController {
         return "redirect:/result/list";
     }
 
+    @GetMapping("/edit/{id}")
+    public String editForm(@PathVariable int id, Model model) {
+        model.addAttribute("result", productionResultService.getResultById(id));
+        model.addAttribute("workOrderList", workOrderService.getWorkOrderList());
+        return "result/form";
+    }
+
+    // 수정 처리
+    @PostMapping("/edit/{id}")
+    public String edit(@PathVariable int id, @ModelAttribute ProductionResultDto dto) {
+        dto.setResultId(id);
+        productionResultService.updateResult(dto);
+        return "redirect:/result/list";
+    }
+
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable int id) {
         productionResultService.deleteResult(id);

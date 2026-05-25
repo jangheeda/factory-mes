@@ -20,4 +20,5 @@ public class ProductionResultDto {
     private String worker;
     private LocalDate resultDate;
     private LocalDateTime createdAt;
+    private String defectType;
 }
