@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mes.factory.mapper.DashboardMapper">
+
+    <!--
+         작업 지시 상태별 건수
+    -->
+    <select id="selectWorkOrderStatusCount" resultType="map">
+        SELECT status, COUNT(*) as cnt
+        FROM work_order
+        GROUP BY status
+    </select>
+
+    <!--
+        오늘 날짜 기준 생산 실적 합계 조회
+    -->
+    <select id="selectTodayResultSummary" resultType="com.mes.factory.dto.DashboardDto">
+        SELECT
+            COALESCE(SUM(good_qty), 0) as totalGoodQty,
+            COALESCE(SUM(defect_qty), 0) as totalDefectQty
+        FROM production_result
+        WHERE result_date = CURDATE()
+    </select>
+
+</mapper>

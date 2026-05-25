@@ -1,0 +1,51 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>대시보드</title>
+</head>
+<body>
+<h1>Factory MES 대시보드</h1>
+
+<!-- 네비게이션 -->
+<nav>
+    <a href="/">대시보드</a> |
+    <a href="/product/list">제품 관리</a> |
+    <a href="/workorder/list">작업지시</a> |
+    <a href="/result/list">생산 실적</a>
+</nav>
+<hr>
+
+<!-- 작업지시 현황 -->
+<h2>오늘의 작업지시 현황</h2>
+<table border="1">
+    <tr>
+        <th>대기</th>
+        <th>진행중</th>
+        <th>완료</th>
+    </tr>
+    <tr>
+        <!-- dashboard 객체에서 각 상태별 건수 표시 -->
+        <td th:text="${dashboard.waitCount}"></td>
+        <td th:text="${dashboard.inProgressCount}"></td>
+        <td th:text="${dashboard.doneCount}"></td>
+    </tr>
+</table>
+
+<!-- 생산 실적 현황 -->
+<h2>오늘의 생산 실적</h2>
+<table border="1">
+    <tr>
+        <th>양품 수량</th>
+        <th>불량 수량</th>
+        <th>불량률</th>
+    </tr>
+    <tr>
+        <td th:text="${dashboard.totalGoodQty}"></td>
+        <td th:text="${dashboard.totalDefectQty}"></td>
+        <!-- getDefectRate() 를 타임리프에서 defectRate 로 호출 -->
+        <td th:text="${dashboard.defectRate} + '%'"></td>
+    </tr>
+</table>
+</body>
+</html>
