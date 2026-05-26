@@ -8,6 +8,7 @@
     <title>생산 실적 목록</title>
 </head>
 <body>
+<h1>생산 실적 목록</h1>
 <!-- 네비게이션 -->
 <nav>
     <a href="/">대시보드</a> |
@@ -16,42 +17,40 @@
     <a href="/result/list">생산 실적</a>
 </nav>
 <hr>
-
-    <h1>생산 실적 목록</h1>
-    <a href="/result/create">실적 등록</a>
-    <br><br>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>제품명</th>
-                <th>목표수량</th>
-                <th>양품수량</th>
-                <th>불량수량</th>
-                <th>불량원인</th>
-                <th>작업자</th>
-                <th>실적일</th>
-                <th>관리</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="result : ${resultList}">
-                <td th:text="${result.resultId}"></td>
-                <td th:text="${result.productName}"></td>
-                <td th:text="${result.targetQty}"></td>
-                <td th:text="${result.goodQty}"></td>
-                <td th:text="${result.defectQty}"></td>
-                <td th:text="${result.defectType}"></td>
-                <td th:text="${result.worker}"></td>
-                <td th:text="${result.resultDate}"></td>
-                <td>
-                    <a th:href="@{/result/edit/{id}(id=${result.resultId})}">수정</a>
-                    <form th:action="@{/result/delete/{id}(id=${result.resultId})}" method="post" style="display:inline">
-                        <button type="submit">삭제</button>
-                    </form>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<a href="/result/create">실적 등록</a>
+<br><br>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>제품명</th>
+        <th>목표수량</th>
+        <th>양품수량</th>
+        <th>불량수량</th>
+        <th>불량원인</th>
+        <th>작업자</th>
+        <th>실적일</th>
+        <th>관리</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="result : ${resultList}">
+        <td th:text="${result.resultId}"></td>
+        <td th:text="${result.productName}"></td>
+        <td th:text="${result.targetQty}"></td>
+        <td th:text="${result.goodQty}"></td>
+        <td th:text="${result.defectQty}"></td>
+        <td th:text="${result.defectType}"></td>
+        <td th:text="${result.worker}"></td>
+        <td th:text="${result.resultDate}"></td>
+        <td>
+            <a th:href="@{/result/edit/{id}(id=${result.resultId})}">수정</a>
+            <form th:action="@{/result/delete/{id}(id=${result.resultId})}" method="post" style="display:inline">
+                <button type="submit">삭제</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>
