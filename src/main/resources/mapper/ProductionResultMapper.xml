@@ -8,8 +8,8 @@
     -->
     <select id="selectResultList" resultType="com.mes.factory.dto.ProductionResultDto">
         SELECT r.*,
-               p.product_name,
-               w.target_qty
+        p.product_name,
+        w.target_qty
         FROM production_result r
         JOIN work_order w ON r.order_id = w.order_id
         JOIN product p ON w.product_id = p.product_id
@@ -18,8 +18,8 @@
 
     <select id="selectResultById" resultType="com.mes.factory.dto.ProductionResultDto">
         SELECT r.*,
-               p.product_name,
-               w.target_qty
+        p.product_name,
+        w.target_qty
         FROM production_result r
         JOIN work_order w ON r.order_id = w.order_id
         JOIN product p ON w.product_id = p.product_id
@@ -36,11 +36,11 @@
 
     <update id="updateResult">
         UPDATE production_result
-        SET good_qty    = #{goodQty},
-            defect_qty  = #{defectQty},
-            defect_type = #{defectType},
-            worker      = #{worker},
-            result_date = #{resultDate}
+        SET good_qty = #{goodQty},
+        defect_qty = #{defectQty},
+        defect_type = #{defectType},
+        worker = #{worker},
+        result_date = #{resultDate}
         WHERE result_id = #{resultId}
     </update>
 

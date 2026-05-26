@@ -3,6 +3,9 @@ package com.mes.factory.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+import java.util.Map;
+
 @Getter
 @Setter
 public class DashboardDto {
@@ -22,4 +25,7 @@ public class DashboardDto {
         if (total == 0) return 0;
         return Math.round((double) totalDefectQty / total * 1000) / 10.0;
     }
+
+    // 작업지시별 진척률 목록
+    private List<Map<String, Object>> progressRateList;
 }

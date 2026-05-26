@@ -17,4 +17,7 @@ public class WorkOrderDto {
     private String status;
     private LocalDate orderDate;
     private LocalDateTime createdAt;
+
+    private int actualQty; // 실제 생산량
+    private double progressRate; // 진척률
 }

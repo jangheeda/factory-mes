@@ -17,8 +17,7 @@
                     <select name="orderId">
                         <option th:each="order : ${workOrderList}"
                                 th:value="${order.orderId}"
-                                th:text="${order.productName} + ' / 목표: ' + ${order.targetQty}">
-                        </option>
+                                th:text="${order.orderId} + '. ' + ${order.productName} + ' / 목표: ' + ${order.targetQty} + '개 / ' + ${order.orderDate}"                        </option>
                     </select>
                 </td>
             </tr>

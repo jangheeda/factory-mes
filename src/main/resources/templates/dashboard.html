@@ -46,5 +46,28 @@
         <td th:text="${dashboard.defectRate} + '%'"></td>
     </tr>
 </table>
+<h2>작업지시 진척률 현황</h2>
+<table border="1">
+    <thead>
+        <tr>
+            <th>작업지시 번호</th>
+            <th>제품명</th>
+            <th>목표수량</th>
+            <th>실제생산량</th>
+            <th>진척률</th>
+            <th>상태</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="item : ${dashboard.progressRateList}">
+            <td th:text="${item.order_id}"></td>
+            <td th:text="${item.product_name}"></td>
+            <td th:text="${item.target_qty}"></td>
+            <td th:text="${item.actual_qty}"></td>
+            <td th:text="${item.progress_rate} + '%'"></td>
+            <td th:text="${item.status}"></td>
+        </tr>
+    </tbody>
+</table>
 </body>
 </html>

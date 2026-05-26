@@ -29,6 +29,9 @@ public class DashboardService {
             else if(status.equals("진행중")) dashboard.setInProgressCount(cnt);
             else if(status.equals("완료")) dashboard.setDoneCount(cnt);
         }
+
+        dashboard.setProgressRateList(dashboardMapper.selectProgressRateList());
+
         return dashboard;
     }
 }

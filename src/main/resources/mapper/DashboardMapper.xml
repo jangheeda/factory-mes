@@ -18,10 +18,25 @@
     -->
     <select id="selectTodayResultSummary" resultType="com.mes.factory.dto.DashboardDto">
         SELECT
-            COALESCE(SUM(good_qty), 0) as totalGoodQty,
-            COALESCE(SUM(defect_qty), 0) as totalDefectQty
+        COALESCE(SUM(good_qty), 0) as totalGoodQty,
+        COALESCE(SUM(defect_qty), 0) as totalDefectQty
         FROM production_result
         WHERE result_date = CURDATE()
+    </select>
+
+    <select id="selectProgressRateList" resultType="map">
+        SELECT
+        w.order_id,
+        p.product_name,
+        w.target_qty,
+        COALESCE(SUM(r.good_qty), 0) AS actual_qty,
+        ROUND(COALESCE(SUM(r.good_qty ), 0) / w.target_qty * 100, 1) AS progress_rate,
+        w.status
+        FROM work_order w
+        JOIN product p ON w.product_id = p.product_id
+        LEFT JOIN production_result r ON w.order_id = r.order_id
+        GROUP BY w.order_id
+        ORDER BY progress_rate DESC
     </select>
 
 </mapper>

@@ -19,8 +19,8 @@
     <update id="updateProduct">
         UPDATE product
         SET product_name = #{productName},
-            product_code = #{productCode},
-            unit = #{unit}
+        product_code = #{productCode},
+        unit = #{unit}
         WHERE product_id = #{productId}
     </update>
 

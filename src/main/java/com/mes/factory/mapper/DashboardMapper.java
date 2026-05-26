@@ -14,4 +14,6 @@ public interface DashboardMapper {
 
     // 오늘 생산 실적 합계 조회
     DashboardDto selectTodayResultSummary();
+
+    List<Map<String, Object>> selectProgressRateList();
 }

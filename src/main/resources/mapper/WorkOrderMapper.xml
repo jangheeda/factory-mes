@@ -5,10 +5,19 @@
 <mapper namespace="com.mes.factory.mapper.WorkOrderMapper">
 
     <select id="selectWorkOrderList" resultType="com.mes.factory.dto.WorkOrderDto">
-        SELECT w.*, p.product_name
-        FROM work_order w
+        SELECT
+        w.*,
+        p.product_name,
+        COALESCE(SUM(r.good_qty), 0) AS actual_qty,
+        ROUND(COALESCE(SUM(r.good_qty), 0) / w.target_qty * 100, 1) AS progressRate
+        FROM
+        work_order w
         JOIN product p ON w.product_id = p.product_id
-        ORDER BY w.created_at DESC
+        LEFT JOIN production_result r ON w.order_id = r.order_id
+        GROUP BY
+        w.order_id
+        ORDER BY
+        w.created_at DESC
     </select>
 
     <select id="selectWorkOrderById" resultType="com.mes.factory.dto.WorkOrderDto">
@@ -22,7 +31,7 @@
         INSERT INTO work_order (product_id, target_qty, status, order_date)
         VALUES (#{productId}, #{targetQty}, '대기', #{orderDate})
     </insert>
-    
+
     <update id="updateStatus">
         UPDATE work_order
         SET status = #{status}
