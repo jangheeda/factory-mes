@@ -1,117 +1,112 @@
-<!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+
 <head>
-    <meta charset="UTF-8">
     <title>생산 실적 등록/수정</title>
 </head>
+
 <body>
+<div layout:fragment="content">
 
-<!-- 등록 폼 -->
-<div th:if="${result.resultId == 0}">
-    <h1>생산 실적 등록</h1>
-    <form th:action="@{/result/create}" method="post">
-        <table>
-            <tr>
-                <td>작업지시 선택</td>
-                <td>
-                    <select name="orderId">
-                        <option th:each="order : ${workOrderList}"
-                                th:value="${order.orderId}"
-                                th:text="${order.orderId} + '. ' + ${order.productName} + ' / 목표: ' + ${order.targetQty} + '개 / ' + ${order.orderDate}"                        </option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>양품 수량</td>
-                <td><input type="number" name="goodQty" min="0" required></td>
-            </tr>
-            <tr>
-                <td>불량 수량</td>
-                <td><input type="number" name="defectQty" min="0" value="0"></td>
-            </tr>
-            <tr>
-                <td>불량 원인</td>
-                <td>
-                    <select name="defectType">
-                        <option value="해당없음">해당없음</option>
-                        <option value="치수불량">치수불량</option>
-                        <option value="외관불량">외관불량</option>
-                        <option value="기능불량">기능불량</option>
-                        <option value="기타">기타</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>작업자</td>
-                <td><input type="text" name="worker" required></td>
-            </tr>
-            <tr>
-                <td>실적일</td>
-                <td><input type="date" name="resultDate" th:max="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}" required></td>
-            </tr>
-        </table>
-        <br>
-        <button type="submit">저장</button>
-        <a href="/result/list">취소</a>
-    </form>
-</div>
+    <!-- 등록 폼 -->
+    <div th:if="${result.resultId == 0}">
+        <h2 class="mb-4">생산 실적 등록</h2>
 
-<!-- 수정 폼 -->
-<div th:if="${result.resultId != 0}">
-    <h1>생산 실적 수정</h1>
-    <form th:action="@{/result/edit/{id}(id=${result.resultId})}" method="post">
-        <table>
-            <tr>
-                <td>작업지시 선택</td>
-                <td>
-                    <select name="orderId">
-                        <option th:each="order : ${workOrderList}"
-                                th:value="${order.orderId}"
-                                th:selected="${order.orderId == result.orderId}"
-                                th:text="${order.productName} + ' / 목표: ' + ${order.targetQty}">
-                        </option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>양품 수량</td>
-                <td><input type="number" name="goodQty" th:value="${result.goodQty}" min="0" required></td>
-            </tr>
-            <tr>
-                <td>불량 수량</td>
-                <td><input type="number" name="defectQty" th:value="${result.defectQty}" min="0"></td>
-            </tr>
-            <tr>
-                <td>불량 원인</td>
-                <td>
-                    <select name="defectType">
-                        <option value="해당없음" th:selected="${result.defectType == '해당없음'}">해당없음</option>
-                        <option value="치수불량" th:selected="${result.defectType == '치수불량'}">치수불량</option>
-                        <option value="외관불량" th:selected="${result.defectType == '외관불량'}">외관불량</option>
-                        <option value="기능불량" th:selected="${result.defectType == '기능불량'}">기능불량</option>
-                        <option value="기타" th:selected="${result.defectType == '기타'}">기타</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>작업자</td>
-                <td><input type="text" name="worker" th:value="${result.worker}"></td>
-            </tr>
-            <tr>
-                <td>실적일</td>
-                <td><input type="date" name="resultDate" th:value="${result.resultDate}" required></td>
-            </tr>
-        </table>
-        <br>
-        <button type="submit">저장</button>
-        <a href="/result/list">취소</a>
-    </form>
+        <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
 
-    <!-- 에러 메시지 표시 -->
-    <div th:if="${errorMessage}">
-        <p style="color:red" th:text="${errorMessage}"></p>
+        <form th:action="@{/result/create}" method="post">
+            <div class="mb-3">
+                <label class="form-label">작업지시 선택</label>
+                <select name="orderId" class="form-select">
+                    <option th:each="order : ${workOrderList}"
+                            th:value="${order.orderId}"
+                            th:text="${order.orderId} + '. ' + ${order.productName} + ' / 목표: ' + ${order.targetQty} + '개 / ' + ${order.orderDate}">
+                    </option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">양품 수량</label>
+                <input type="number" name="goodQty" class="form-control" min="0" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">불량 수량</label>
+                <input type="number" name="defectQty" class="form-control" min="0" value="0">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">불량 원인</label>
+                <select name="defectType" class="form-select">
+                    <option value="해당없음">해당없음</option>
+                    <option value="치수불량">치수불량</option>
+                    <option value="외관불량">외관불량</option>
+                    <option value="기능불량">기능불량</option>
+                    <option value="기타">기타</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">작업자</label>
+                <input type="text" name="worker" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">실적일</label>
+                <input type="date" name="resultDate" class="form-control"
+                       th:max="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}" required>
+            </div>
+            <button type="submit" class="btn btn-primary">저장</button>
+            <a href="/result/list" class="btn btn-secondary">취소</a>
+        </form>
     </div>
-</div>
 
+    <!-- 수정 폼 -->
+    <div th:if="${result.resultId != 0}">
+        <h2 class="mb-4">생산 실적 수정</h2>
+        <form th:action="@{/result/edit/{id}(id=${result.resultId})}" method="post">
+            <div class="mb-3">
+                <label class="form-label">작업지시 선택</label>
+                <select name="orderId" class="form-select">
+                    <option th:each="order : ${workOrderList}"
+                            th:value="${order.orderId}"
+                            th:selected="${order.orderId == result.orderId}"
+                            th:text="${order.productName} + ' / 목표: ' + ${order.targetQty}">
+                    </option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">양품 수량</label>
+                <input type="number" name="goodQty" class="form-control"
+                       th:value="${result.goodQty}" min="0" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">불량 수량</label>
+                <input type="number" name="defectQty" class="form-control"
+                       th:value="${result.defectQty}" min="0">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">불량 원인</label>
+                <select name="defectType" class="form-select">
+                    <option value="해당없음" th:selected="${result.defectType == '해당없음'}">해당없음</option>
+                    <option value="치수불량" th:selected="${result.defectType == '치수불량'}">치수불량</option>
+                    <option value="외관불량" th:selected="${result.defectType == '외관불량'}">외관불량</option>
+                    <option value="기능불량" th:selected="${result.defectType == '기능불량'}">기능불량</option>
+                    <option value="기타" th:selected="${result.defectType == '기타'}">기타</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">작업자</label>
+                <input type="text" name="worker" class="form-control"
+                       th:value="${result.worker}">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">실적일</label>
+                <input type="date" name="resultDate" class="form-control"
+                       th:value="${result.resultDate}" required>
+            </div>
+            <button type="submit" class="btn btn-primary">저장</button>
+            <a href="/result/list" class="btn btn-secondary">취소</a>
+        </form>
+    </div>
+
+</div>
 </body>
 </html>

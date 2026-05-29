@@ -1,58 +1,60 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+
 <head>
-    <meta charset="UTF-8">
     <title>제품 등록/수정</title>
 </head>
+
 <body>
+<div layout:fragment="content">
 
-<!-- 등록 폼 -->
-<div th:if="${product.productId == 0}">
-    <h1>제품 등록</h1>
-    <form th:action="@{/product/create}" method="post">
-        <table>
-            <tr>
-                <td>제품명</td>
-                <td><input type="text" name="productName" required></td>
-            </tr>
-            <tr>
-                <td>제품코드</td>
-                <td><input type="text" name="productCode" required></td>
-            </tr>
-            <tr>
-                <td>단위</td>
-                <td><input type="text" name="unit" required></td>
-            </tr>
-        </table>
-        <br>
-        <button type="submit">저장</button>
-        <a href="/product/list">취소</a>
-    </form>
+    <!-- 등록 폼 -->
+    <div th:if="${product.productId == 0}">
+        <h2 class="mb-4">제품 등록</h2>
+        <form th:action="@{/product/create}" method="post">
+            <div class="mb-3">
+                <label class="form-label">제품명</label>
+                <input type="text" name="productName" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">제품코드</label>
+                <input type="text" name="productCode" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">단위</label>
+                <input type="text" name="unit" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">저장</button>
+            <a href="/product/list" class="btn btn-secondary">취소</a>
+        </form>
+    </div>
+
+    <!-- 수정 폼 -->
+    <div th:if="${product.productId != 0}">
+        <h2 class="mb-4">제품 수정</h2>
+        <form th:action="@{/product/edit/{id}(id=${product.productId})}" method="post">
+            <div class="mb-3">
+                <label class="form-label">제품명</label>
+                <input type="text" name="productName" class="form-control"
+                       th:value="${product.productName}" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">제품코드</label>
+                <input type="text" name="productCode" class="form-control"
+                       th:value="${product.productCode}" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">단위</label>
+                <input type="text" name="unit" class="form-control"
+                       th:value="${product.unit}" required>
+            </div>
+            <button type="submit" class="btn btn-primary">저장</button>
+            <a href="/product/list" class="btn btn-secondary">취소</a>
+        </form>
+    </div>
+
 </div>
-
-<!-- 수정 폼 -->
-<div th:if="${product.productId != 0}">
-    <h1>제품 수정</h1>
-    <form th:action="@{/product/edit/{id}(id=${product.productId})}" method="post">
-        <table>
-            <tr>
-                <td>제품명</td>
-                <td><input type="text" name="productName" th:value="${product.productName}" required></td>
-            </tr>
-            <tr>
-                <td>제품코드</td>
-                <td><input type="text" name="productCode" th:value="${product.productCode}" required></td>
-            </tr>
-            <tr>
-                <td>단위</td>
-                <td><input type="text" name="unit" th:value="${product.unit}" required></td>
-            </tr>
-        </table>
-        <br>
-        <button type="submit">저장</button>
-        <a href="/product/list">취소</a>
-    </form>
-</div>
-
 </body>
 </html>

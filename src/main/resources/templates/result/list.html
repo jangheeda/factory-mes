@@ -1,56 +1,54 @@
-<!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>생산 실적 목록</title>
 </head>
+
 <body>
-<h1>생산 실적 목록</h1>
-<!-- 네비게이션 -->
-<nav>
-    <a href="/">대시보드</a> |
-    <a href="/product/list">제품 관리</a> |
-    <a href="/workorder/list">작업지시</a> |
-    <a href="/result/list">생산 실적</a>
-</nav>
-<hr>
-<a href="/result/create">실적 등록</a>
-<br><br>
-<table border="1">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>제품명</th>
-        <th>목표수량</th>
-        <th>양품수량</th>
-        <th>불량수량</th>
-        <th>불량원인</th>
-        <th>작업자</th>
-        <th>실적일</th>
-        <th>관리</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="result : ${resultList}">
-        <td th:text="${result.resultId}"></td>
-        <td th:text="${result.productName}"></td>
-        <td th:text="${result.targetQty}"></td>
-        <td th:text="${result.goodQty}"></td>
-        <td th:text="${result.defectQty}"></td>
-        <td th:text="${result.defectType}"></td>
-        <td th:text="${result.worker}"></td>
-        <td th:text="${result.resultDate}"></td>
-        <td>
-            <a th:href="@{/result/edit/{id}(id=${result.resultId})}">수정</a>
-            <form th:action="@{/result/delete/{id}(id=${result.resultId})}" method="post" style="display:inline">
-                <button type="submit">삭제</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<div layout:fragment="content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>생산 실적 목록</h2>
+        <a href="/result/create" class="btn btn-primary">실적 등록</a>
+    </div>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>제품명</th>
+            <th>목표수량</th>
+            <th>양품수량</th>
+            <th>불량수량</th>
+            <th>불량원인</th>
+            <th>작업자</th>
+            <th>실적일</th>
+            <th>관리</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="result : ${resultList}">
+            <td th:text="${result.resultId}"></td>
+            <td th:text="${result.productName}"></td>
+            <td th:text="${result.targetQty}"></td>
+            <td th:text="${result.goodQty}"></td>
+            <td th:text="${result.defectQty}"></td>
+            <td th:text="${result.defectType}"></td>
+            <td th:text="${result.worker}"></td>
+            <td th:text="${result.resultDate}"></td>
+            <td>
+                <a th:href="@{/result/edit/{id}(id=${result.resultId})}"
+                   class="btn btn-sm btn-warning">수정</a>
+                <form th:action="@{/result/delete/{id}(id=${result.resultId})}"
+                      method="post" style="display:inline">
+                    <button type="submit" class="btn btn-sm btn-danger">삭제</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>
