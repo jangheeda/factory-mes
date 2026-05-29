@@ -1,6 +1,7 @@
 package com.mes.factory.controller;
 
 import com.mes.factory.dto.ProductionResultDto;
+import com.mes.factory.dto.WorkOrderDto;
 import com.mes.factory.service.ProductionResultService;
 import com.mes.factory.service.WorkOrderService;
 import org.springframework.stereotype.Controller;
@@ -33,8 +34,18 @@ public class ProductionResultController {
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute ProductionResultDto dto) {
-        productionResultService.createResult(dto);
+    public String create(@ModelAttribute ProductionResultDto dto, Model model) {
+        WorkOrderDto workOrder = workOrderService.getWorkOrderById(dto.getOrderId());
+
+        String errorMessage = productionResultService.createResult(dto, workOrder.getTargetQty());
+
+        if(errorMessage != null) {
+            model.addAttribute("result", dto);
+            model.addAttribute("workOrderList", workOrderService.getWorkOrderList());
+            model.addAttribute("errorMessage", errorMessage);
+            return "result/form";
+        }
+
         return "redirect:/result/list";
     }
 

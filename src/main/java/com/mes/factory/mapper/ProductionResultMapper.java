@@ -22,4 +22,7 @@ public interface ProductionResultMapper {
 
     // 실적 삭제
     void deleteResult(int resultId);
+
+    // 특정 작업지시의 현재 누적 생산량 조회
+    int selectTotalGoodQtyByOrderId(int orderId);
 }

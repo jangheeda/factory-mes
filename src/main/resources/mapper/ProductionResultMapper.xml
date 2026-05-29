@@ -51,4 +51,10 @@
         DELETE FROM production_result WHERE result_id = #{resultId}
     </delete>
 
+    <select id="selectTotalGoodQtyByOrderId" resultType="int">
+        SELECT COALESCE(SUM(good_qty), 0)
+        FROM production_result
+        WHERE order_id = #{orderId}
+    </select>
+
 </mapper>
