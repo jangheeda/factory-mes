@@ -10,4 +10,6 @@ public interface UserMapper {
 
     void insertUser(UserDto userDto);
 
+    int countByLoginId(String loginId);
+
 }

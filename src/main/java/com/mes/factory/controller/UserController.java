@@ -29,8 +29,13 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute UserDto userDto) {
-        userService.register(userDto);
+    public String register(@ModelAttribute UserDto userDto, Model model) {
+        boolean result = userService.register(userDto);
+
+        if(!result) {
+            model.addAttribute("errorMessage", "이미 사용 중인 아이디입니다.");
+            return "register";
+        }
         return "redirect:/login";
     }
 }

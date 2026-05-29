@@ -14,4 +14,10 @@
         VALUES (#{loginId}, #{password}, #{userName}, #{role})
     </insert>
 
+    <select id="countByLoginId" resultType="int">
+        SELECT COUNT(*)
+        FROM users
+        WHERE login_id = #{loginId}
+    </select>
+
 </mapper>
