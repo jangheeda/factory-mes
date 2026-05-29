@@ -11,16 +11,23 @@
 | Security | Spring Security 6 |
 | Database | MariaDB |
 | ORM | MyBatis |
-| View | Thymeleaf |
+| View | Thymeleaf, Thymeleaf Layout Dialect |
+| Frontend | Bootstrap 5 (Darkly 테마) |
 | Build | Gradle |
-| 배포 | Railway (예정) |
+| 배포 | AWS EC2 (예정) |
 
 ## 주요 기능
-- **로그인/로그아웃** : Spring Security 기반 인증, BCrypt 비밀번호 암호화
+- **로그인/로그아웃** : Spring Security 기반 인증, BCrypt 비밀번호 암호화, 아이디 중복 체크
 - **제품 관리** : 제품 등록 / 조회 / 수정 / 삭제
 - **작업지시 관리** : 작업지시 등록 / 조회 / 상태 변경(대기→진행중→완료) / 삭제 / 진척률 표시
-- **생산 실적 관리** : 실적 등록 / 조회 / 수정 / 삭제 / 불량 원인 분류
+- **생산 실적 관리** : 실적 등록 / 조회 / 수정 / 삭제 / 불량 원인 분류 / 유효성 검사
 - **대시보드** : 작업지시 현황, 생산 진척률, 오늘의 생산 실적, 불량률 현황
+
+## 유효성 검사
+- 회원가입 아이디 중복 체크
+- 생산 실적 작업자 필수 입력
+- 생산 실적 미래 날짜 등록 방지
+- 목표수량 초과 실적 등록 방지
 
 ## DB 설계
 ```
@@ -82,6 +89,7 @@ http://localhost:8080
 ```
 src/main/java/com/mes/factory
 ├── controller
+│   └── api (예정)
 ├── service
 ├── mapper
 ├── dto
