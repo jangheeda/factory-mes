@@ -8,6 +8,7 @@ import lombok.Setter;
 public class ProductionResultSearchDto {
 
     private String productName;
+    private String defectType;
     private String worker;
     private String startDate;
     private String endDate;

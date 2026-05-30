@@ -69,6 +69,9 @@
             <if test="productName != null and productName != ''">
                 AND p.product_name LIKE CONCAT('%', #{productName}, '%')
             </if>
+            <if test="defectType != null and defectType != ''">
+                AND r.defect_type = #{defectType}
+            </if>
             <if test="worker != null and worker != ''">
                 AND r.worker LIKE CONCAT('%', #{worker}, '%')
             </if>
@@ -92,8 +95,11 @@
             <if test="productName != null and productName != ''">
                 AND p.product_name LIKE CONCAT('%', #{productName}, '%')
             </if>
+            <if test="defectType != null and defectType != ''">
+                AND r.defect_type = #{defectType}
+            </if>
             <if test="worker != null and worker != ''">
-                AND r.worker = #{worker}
+                AND r.worker LIKE CONCAT('%', #{worker}, '%')
             </if>
             <if test="startDate != null and startDate != ''">
                 AND r.result_date >= #{startDate}

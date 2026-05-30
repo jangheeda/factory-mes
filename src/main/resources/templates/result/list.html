@@ -17,11 +17,21 @@
     <!-- [S] 검색 폼 -->
     <form th:action="@{/result/list}" method="get" class="mb-4">
         <div class="row g-2">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <input type="text" name="productName" class="form-control"
                        placeholder="제품명 검색" th:value="${searchDto.productName}">
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
+                <select name="defectType" class="form-select">
+                    <option value="">전체 불량원인</option>
+                    <option value="해당없음" th:selected="${searchDto.defectType == '해당없음'}">해당없음</option>
+                    <option value="치수불량" th:selected="${searchDto.defectType == '치수불량'}">치수불량</option>
+                    <option value="외관불량" th:selected="${searchDto.defectType == '외관불량'}">외관불량</option>
+                    <option value="기능불량" th:selected="${searchDto.defectType == '기능불량'}">기능불량</option>
+                    <option value="기타" th:selected="${searchDto.defectType == '기타'}">기타</option>
+                </select>
+            </div>
+            <div class="col-md-2">
                 <input type="text" name="worker" class="form-control"
                        placeholder="작업자 검색" th:value="${searchDto.worker}">
             </div>
@@ -86,20 +96,20 @@
         <ul class="pagination justify-content-center">
             <li class="page-item" th:classappend="${searchDto.page == 1} ? 'disabled'">
                 <a class="page-link"
-                   th:href="@{/result/list(page=${searchDto.page - 1}, productName=${searchDto.productName}, worker=${searchDto.worker}, startDate=${searchDto.startDate}, endDate=${searchDto.endDate})}">
+                   th:href="@{/result/list(page=${searchDto.page - 1}, productName=${searchDto.productName}, worker=${searchDto.worker}, defectType=${searchDto.defectType}, startDate=${searchDto.startDate}, endDate=${searchDto.endDate})}">
                     이전
                 </a>
             </li>
             <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}"
                 th:classappend="${i == searchDto.page} ? 'active'">
                 <a class="page-link"
-                   th:href="@{/result/list(page=${i}, productName=${searchDto.productName}, worker=${searchDto.worker}, startDate=${searchDto.startDate}, endDate=${searchDto.endDate})}"
+                   th:href="@{/result/list(page=${i}, productName=${searchDto.productName}, worker=${searchDto.worker}, defectType=${searchDto.defectType}, startDate=${searchDto.startDate}, endDate=${searchDto.endDate})}"
                    th:text="${i}">
                 </a>
             </li>
             <li class="page-item" th:classappend="${searchDto.page == totalPages} ? 'disabled'">
                 <a class="page-link"
-                   th:href="@{/result/list(page=${searchDto.page + 1}, productName=${searchDto.productName}, worker=${searchDto.worker}, startDate=${searchDto.startDate}, endDate=${searchDto.endDate})}">
+                   th:href="@{/result/list(page=${searchDto.page + 1}, productName=${searchDto.productName}, worker=${searchDto.worker}, defectType=${searchDto.defectType}, startDate=${searchDto.startDate}, endDate=${searchDto.endDate})}">
                     다음
                 </a>
             </li>
