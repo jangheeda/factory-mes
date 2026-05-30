@@ -10,10 +10,43 @@
 <body>
 <div layout:fragment="content">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>작업지시 목록</h2>
+        <h2>작업지시 목록 <span class="fs-6 text-muted" th:text="'(총 ' + ${totalCount} + '건)'"></span></h2>
         <a href="/workorder/create" class="btn btn-primary">작업지시 등록</a>
     </div>
+    <!-- [S] 검색 폼 -->
+    <form th:action="@{/workorder/list}" method="get" class="mb-4">
+        <div class="row g-2">
+            <div class="col-md-2">
+                <select name="status" class="form-select" th:value="${searchDto.status}">
+                    <option value="">전체 상태</option>
+                    <option value="대기" th:selected="${searchDto.status == '대기'}">대기</option>
+                    <option value="진행중" th:selected="${searchDto.status == '진행중'}">진행중</option>
+                    <option value="완료" th:selected="${searchDto.status == '완료'}">완료</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <input type="text" name="productName" class="form-control"
+                       placeholder="제품명 검색" th:value="${searchDto.productName}">
+            </div>
+            <div class="col-md-2">
+                <input type="date" name="startDate" class="form-control"
+                       th:value="${searchDto.startDate}">
+            </div>
+            <div class="col-md-2">
+                <input type="date" name="endDate" class="form-control"
+                       th:value="${searchDto.endDate}">
+            </div>
+            <div class="col-md-1">
+                <button type="submit" class="btn btn-primary w-100">검색</button>
+            </div>
+            <div class="col-md-1">
+                <a href="/workorder/list" class="btn btn-secondary w-100">초기화</a>
+            </div>
+        </div>
+    </form>
+    <!-- [E] 검색 폼 -->
 
+    <!-- [S] 목록 테이블 -->
     <table class="table table-bordered table-hover">
         <thead class="table-dark">
         <tr>
@@ -59,6 +92,36 @@
         </tr>
         </tbody>
     </table>
+    <!-- [E] 목록 테이블 -->
+
+    <!-- [S] 페이징 -->
+    <nav th:if="${totalPages > 1}">
+        <ul class="pagination justify-content-center">
+            <!-- 이전 버튼 -->
+            <li class="page-item" th:classappend="${searchDto.page == 1} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/workorder/list(page=${searchDto.page - 1}, status=${searchDto.status}, productName=${searchDto.productName}, startDate=${searchDto.startDate}, endDate=${searchDto.endDate})}">
+                    이전
+                </a>
+            </li>
+            <!-- 페이지 번호 -->
+            <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}"
+                th:classappend="${i == searchDto.page} ? 'active'">
+                <a class="page-link"
+                   th:href="@{/workorder/list(page=${i}, status=${searchDto.status}, productName=${searchDto.productName}, startDate=${searchDto.startDate}, endDate=${searchDto.endDate})}"
+                   th:text="${i}">
+                </a>
+            </li>
+            <!-- 다음 버튼 -->
+            <li class="page-item" th:classappend="${searchDto.page == totalPages} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/workorder/list(page=${searchDto.page + 1}, status=${searchDto.status}, productName=${searchDto.productName}, startDate=${searchDto.startDate}, endDate=${searchDto.endDate})}">
+                    다음
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <!-- [E] 페이징 -->
 </div>
 </body>
 </html>

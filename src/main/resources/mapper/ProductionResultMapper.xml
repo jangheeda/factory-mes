@@ -57,4 +57,51 @@
         WHERE order_id = #{orderId}
     </select>
 
+    <select id="selectResultListBySearch" resultType="com.mes.factory.dto.ProductionResultDto">
+        SELECT
+            r.*,
+            p.product_name,
+            w.target_qty
+        FROM production_result r
+        JOIN work_order w ON r.order_id = w.order_id
+        JOIN product p ON w.product_id = p.product_id
+        <where>
+            <if test="productName != null and productName != ''">
+                AND p.product_name LIKE CONCAT('%', #{productName}, '%')
+            </if>
+            <if test="worker != null and worker != ''">
+                AND r.worker LIKE CONCAT('%', #{worker}, '%')
+            </if>
+            <if test="startDate != null and startDate != ''">
+                AND r.result_date >= #{startDate}
+            </if>
+            <if test="endDate != null and endDate != ''">
+                AND r.result_date &lt;= #{endDate}
+            </if>
+        </where>
+        ORDER BY r.created_at DESC
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+    <select id="selectResultCount" resultType="int">
+        SELECT COUNT(*)
+        FROM production_result r
+        JOIN work_order w ON r.order_id = w.order_id
+        JOIN product p ON w.product_id = p.product_id
+        <where>
+            <if test="productName != null and productName != ''">
+                AND p.product_name LIKE CONCAT('%', #{productName}, '%')
+            </if>
+            <if test="worker != null and worker != ''">
+                AND r.worker = #{worker}
+            </if>
+            <if test="startDate != null and startDate != ''">
+                AND r.result_date >= #{startDate}
+            </if>
+            <if test="endDate != null and endDate != ''">
+                AND r.result_date &lt;= #{endDate}
+            </if>
+        </where>
+    </select>
+
 </mapper>

@@ -1,6 +1,7 @@
 package com.mes.factory.mapper;
 
 import com.mes.factory.dto.ProductionResultDto;
+import com.mes.factory.dto.ProductionResultSearchDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -25,4 +26,8 @@ public interface ProductionResultMapper {
 
     // 특정 작업지시의 현재 누적 생산량 조회
     int selectTotalGoodQtyByOrderId(int orderId);
+
+    List<ProductionResultDto> selectResultListBySearch(ProductionResultSearchDto searchDto);
+
+    int selectResultCount(ProductionResultSearchDto searchDto);
 }

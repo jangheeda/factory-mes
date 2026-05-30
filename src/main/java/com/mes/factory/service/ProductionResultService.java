@@ -1,6 +1,7 @@
 package com.mes.factory.service;
 
 import com.mes.factory.dto.ProductionResultDto;
+import com.mes.factory.dto.ProductionResultSearchDto;
 import com.mes.factory.mapper.ProductionResultMapper;
 import org.springframework.stereotype.Service;
 
@@ -52,4 +53,22 @@ public class ProductionResultService {
         productionResultMapper.deleteResult(resultId);
     }
 
+    // 검색 조건으로 생산실적 목록 조회
+    public List<ProductionResultDto> getResultListBySearch(ProductionResultSearchDto searchDto) {
+        // 기본값 설정
+        if (searchDto.getPage() == 0) searchDto.setPage(1);
+        if (searchDto.getPageSize() == 0) searchDto.setPageSize(10);
+
+        return productionResultMapper.selectResultListBySearch(searchDto);
+    }
+
+    // 전체 건수 조회
+    public int getResultCount(ProductionResultSearchDto searchDto) {
+        return productionResultMapper.selectResultCount(searchDto);
+    }
+
+    // 페이지 수 계산
+    public int getTotalPages(int totalCount, int pageSize) {
+        return (int) Math.ceil((double) totalCount / pageSize);
+    }
 }

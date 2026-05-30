@@ -1,11 +1,14 @@
 package com.mes.factory.controller;
 
 import com.mes.factory.dto.WorkOrderDto;
+import com.mes.factory.dto.WorkOrderSearchDto;
 import com.mes.factory.service.ProductService;
 import com.mes.factory.service.WorkOrderService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/workorder")
@@ -22,8 +25,24 @@ public class WorkOrderController {
 
     // 목록
     @GetMapping("/list")
-    public String list(Model model) {
-        model.addAttribute("workOrderList", workOrderService.getWorkOrderList());
+    public String list(@ModelAttribute WorkOrderSearchDto searchDto, Model model) {
+
+        // 기본값 설정
+        if (searchDto.getPage() == 0) searchDto.setPage(1);
+        if (searchDto.getPageSize() == 0) searchDto.setPageSize(10);
+
+        // 검색 결과 목록
+        List<WorkOrderDto> workOrderList = workOrderService.getWorkOrderListBySearch(searchDto);
+
+        // 전체 건수 및 페이지 수
+        int totalCount = workOrderService.getWorkOrderCount(searchDto);
+        int totalPages = workOrderService.getTotalPages(totalCount, searchDto.getPageSize());
+
+        model.addAttribute("workOrderList", workOrderList);
+        model.addAttribute("searchDto", searchDto);
+        model.addAttribute("totalCount", totalCount);
+        model.addAttribute("totalPages", totalPages);
+
         return "workorder/list";
     }
 

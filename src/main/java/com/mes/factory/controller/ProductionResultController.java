@@ -1,12 +1,15 @@
 package com.mes.factory.controller;
 
 import com.mes.factory.dto.ProductionResultDto;
+import com.mes.factory.dto.ProductionResultSearchDto;
 import com.mes.factory.dto.WorkOrderDto;
 import com.mes.factory.service.ProductionResultService;
 import com.mes.factory.service.WorkOrderService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/result")
@@ -21,8 +24,21 @@ public class ProductionResultController {
     }
 
     @GetMapping("/list")
-    public String list(Model model) {
-        model.addAttribute("resultList", productionResultService.getResultList());
+    public String list(@ModelAttribute ProductionResultSearchDto searchDto, Model model) {
+
+        // 기본값 설정
+        if (searchDto.getPage() == 0) searchDto.setPage(1);
+        if (searchDto.getPageSize() == 0) searchDto.setPageSize(10);
+
+        List<ProductionResultDto> resultList = productionResultService.getResultListBySearch(searchDto);
+
+        int totalCount = productionResultService.getResultCount(searchDto);
+        int totalPages = productionResultService.getTotalPages(totalCount, searchDto.getPageSize());
+
+        model.addAttribute("resultList", resultList);
+        model.addAttribute("searchDto", searchDto);
+        model.addAttribute("totalCount", totalCount);
+        model.addAttribute("totalPages", totalPages);
         return "result/list";
     }
 
