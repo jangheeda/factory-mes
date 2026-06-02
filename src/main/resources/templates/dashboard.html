@@ -20,7 +20,7 @@
             <div class="card text-white bg-secondary">
                 <div class="card-body text-center">
                     <h6 class="card-title">대기</h6>
-                    <h2 th:text="${dashboard.waitCount}"></h2>
+                    <h2 id="waitCount" th:text="${dashboard.waitCount}"></h2>
                 </div>
             </div>
         </div>
@@ -28,7 +28,7 @@
             <div class="card text-white bg-primary">
                 <div class="card-body text-center">
                     <h6 class="card-title">진행중</h6>
-                    <h2 th:text="${dashboard.inProgressCount}"></h2>
+                    <h2 id="inProgressCount" th:text="${dashboard.inProgressCount}"></h2>
                 </div>
             </div>
         </div>
@@ -36,7 +36,7 @@
             <div class="card text-white bg-success">
                 <div class="card-body text-center">
                     <h6 class="card-title">완료</h6>
-                    <h2 th:text="${dashboard.doneCount}"></h2>
+                    <h2 id="doneCount" th:text="${dashboard.doneCount}"></h2>
                 </div>
             </div>
         </div>
@@ -51,7 +51,7 @@
             <div class="card text-white bg-info">
                 <div class="card-body text-center">
                     <h6 class="card-title">양품 수량</h6>
-                    <h2 th:text="${dashboard.totalGoodQty}"></h2>
+                    <h2 id="totalGoodQty" th:text="${dashboard.totalGoodQty}"></h2>
                 </div>
             </div>
         </div>
@@ -59,7 +59,7 @@
             <div class="card text-white bg-danger">
                 <div class="card-body text-center">
                     <h6 class="card-title">불량 수량</h6>
-                    <h2 th:text="${dashboard.totalDefectQty}"></h2>
+                    <h2 id="totalDefectQty" th:text="${dashboard.totalDefectQty}"></h2>
                 </div>
             </div>
         </div>
@@ -67,7 +67,7 @@
             <div class="card text-white bg-warning">
                 <div class="card-body text-center">
                     <h6 class="card-title">불량률</h6>
-                    <h2 th:text="${dashboard.defectRate} + '%'"></h2>
+                    <h2 id="defectRate" th:text="${dashboard.defectRate} + '%'"></h2>
                 </div>
             </div>
         </div>
@@ -78,7 +78,7 @@
         <div class="col-12">
             <h5>작업지시 진척률 현황</h5>
             <div style="max-height: 400px; overflow-y: auto; border: 1px solid #444;">
-                <table class="table table-bordered table-hover mb-0">
+                <table id="progressTable" class="table table-bordered table-hover mb-0">
                     <thead class="table-dark" style="position: sticky; top: 0;">
                     <tr>
                         <th>작업지시 번호</th>
@@ -103,6 +103,47 @@
             </div>
         </div>
     </div>
+
+    <!-- WebSocket 스크립트 -->
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <script>
+        const socket = new SockJS('/ws');
+        const stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, function (frame) {
+            console.log('WebSocket 연결됨: ' + frame);
+
+            stompClient.subscribe('/topic/dashboard', function (message) {
+                const data = JSON.parse(message.body);
+
+                // 작업지시 현황 업데이트
+                document.getElementById('waitCount').innerText = data.waitCount;
+                document.getElementById('inProgressCount').innerText = data.inProgressCount;
+                document.getElementById('doneCount').innerText = data.doneCount;
+
+                // 생산 실적 업데이트
+                document.getElementById('totalGoodQty').innerText = data.totalGoodQty;
+                document.getElementById('totalDefectQty').innerText = data.totalDefectQty;
+                document.getElementById('defectRate').innerText = data.defectRate + '%';
+
+                // 진척률 테이블 업데이트
+                const tbody = document.querySelector('#progressTable tbody');
+                tbody.innerHTML = '';
+                data.progressRateList.forEach(item => {
+                    const row = `<tr>
+                        <td>${item.order_id}</td>
+                        <td>${item.product_name}</td>
+                        <td>${item.target_qty}</td>
+                        <td>${item.actual_qty}</td>
+                        <td>${item.progress_rate}%</td>
+                        <td>${item.status}</td>
+                    </tr>`;
+                    tbody.innerHTML += row;
+                });
+            });
+        });
+    </script>
 </div>
 </body>
 </html>

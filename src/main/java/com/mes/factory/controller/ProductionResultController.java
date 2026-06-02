@@ -3,8 +3,10 @@ package com.mes.factory.controller;
 import com.mes.factory.dto.ProductionResultDto;
 import com.mes.factory.dto.ProductionResultSearchDto;
 import com.mes.factory.dto.WorkOrderDto;
+import com.mes.factory.service.DashboardService;
 import com.mes.factory.service.ProductionResultService;
 import com.mes.factory.service.WorkOrderService;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +19,17 @@ public class ProductionResultController {
 
     private final ProductionResultService productionResultService;
     private final WorkOrderService workOrderService;
+    private final SimpMessagingTemplate messagingTemplate;
+    private final DashboardService dashboardService;
 
-    public ProductionResultController(ProductionResultService productionResultService, WorkOrderService workOrderService) {
+    public ProductionResultController(ProductionResultService productionResultService,
+                                      WorkOrderService workOrderService,
+                                      SimpMessagingTemplate messagingTemplate,
+                                      DashboardService dashboardService) {
         this.productionResultService = productionResultService;
         this.workOrderService = workOrderService;
+        this.messagingTemplate = messagingTemplate;
+        this.dashboardService = dashboardService;
     }
 
     @GetMapping("/list")
@@ -62,6 +71,8 @@ public class ProductionResultController {
             return "result/form";
         }
 
+        // 대시보드 실시간 업데이트
+        messagingTemplate.convertAndSend("/topic/dashboard", dashboardService.getDashboardData());
         return "redirect:/result/list";
     }
 
@@ -77,12 +88,18 @@ public class ProductionResultController {
     public String edit(@PathVariable int id, @ModelAttribute ProductionResultDto dto) {
         dto.setResultId(id);
         productionResultService.updateResult(dto);
+
+        // 대시보드 실시간 업데이트
+        messagingTemplate.convertAndSend("/topic/dashboard", dashboardService.getDashboardData());
         return "redirect:/result/list";
     }
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable int id) {
         productionResultService.deleteResult(id);
+
+        // 대시보드 실시간 업데이트
+        messagingTemplate.convertAndSend("/topic/dashboard", dashboardService.getDashboardData());
         return "redirect:/result/list";
     }
 }

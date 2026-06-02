@@ -34,6 +34,8 @@ dependencies {
 	// thymeleaf
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 
+	// websocket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
 	//	test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

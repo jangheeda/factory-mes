@@ -2,8 +2,10 @@ package com.mes.factory.controller;
 
 import com.mes.factory.dto.WorkOrderDto;
 import com.mes.factory.dto.WorkOrderSearchDto;
+import com.mes.factory.service.DashboardService;
 import com.mes.factory.service.ProductService;
 import com.mes.factory.service.WorkOrderService;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +18,17 @@ public class WorkOrderController {
 
     private final WorkOrderService workOrderService;
     private final ProductService productService;
+    private final SimpMessagingTemplate messagingTemplate;
+    private final DashboardService dashboardService;
 
-
-    public WorkOrderController(WorkOrderService workOrderService, ProductService productService) {
+    public WorkOrderController(WorkOrderService workOrderService,
+                               ProductService productService,
+                               SimpMessagingTemplate messagingTemplate,
+                               DashboardService dashboardService) {
         this.workOrderService = workOrderService;
         this.productService = productService;
+        this.messagingTemplate = messagingTemplate;
+        this.dashboardService = dashboardService;
     }
 
     // 목록
@@ -68,6 +76,8 @@ public class WorkOrderController {
         dto.setOrderId(id);
         dto.setStatus(status);
         workOrderService.updateStatus(dto);
+
+        messagingTemplate.convertAndSend("/topic/dashboard", dashboardService.getDashboardData());
         return "redirect:/workorder/list";
     }
 
