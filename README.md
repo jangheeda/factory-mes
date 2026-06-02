@@ -14,6 +14,7 @@
 | View | Thymeleaf, Thymeleaf Layout Dialect |
 | Frontend | Bootstrap 5 (Darkly 테마) |
 | Build | Gradle |
+| WebSocket | Spring WebSocket, STOMP, SockJS |
 | 배포 | AWS EC2 (예정) |
 
 ## 주요 기능
@@ -22,12 +23,33 @@
 - **작업지시 관리** : 작업지시 등록 / 조회 / 상태 변경(대기→진행중→완료) / 삭제 / 진척률 표시
 - **생산 실적 관리** : 실적 등록 / 조회 / 수정 / 삭제 / 불량 원인 분류 / 유효성 검사
 - **대시보드** : 작업지시 현황, 생산 진척률, 오늘의 생산 실적, 불량률 현황
+- **실시간 대시보드** : WebSocket(STOMP) 기반 실시간 업데이트 (작업지시 현황, 생산 실적, 진척률)
 
 ## 유효성 검사
 - 회원가입 아이디 중복 체크
 - 생산 실적 작업자 필수 입력
 - 생산 실적 미래 날짜 등록 방지
 - 목표수량 초과 실적 등록 방지
+
+## API 명세
+| Method | URL | 설명 |
+|--------|-----|------|
+| GET | /api/products | 제품 목록 조회 |
+| GET | /api/products/{id} | 제품 단건 조회 |
+| POST | /api/products | 제품 등록 |
+| PUT | /api/products/{id} | 제품 수정 |
+| DELETE | /api/products/{id} | 제품 삭제 |
+| GET | /api/work-orders | 작업지시 목록 조회 |
+| GET | /api/work-orders/{id} | 작업지시 단건 조회 |
+| POST | /api/work-orders | 작업지시 등록 |
+| PATCH | /api/work-orders/{id}/status | 작업지시 상태 변경 |
+| DELETE | /api/work-orders/{id} | 작업지시 삭제 |
+| GET | /api/results | 생산 실적 목록 조회 |
+| GET | /api/results/{id} | 생산 실적 단건 조회 |
+| POST | /api/results | 생산 실적 등록 |
+| PUT | /api/results/{id} | 생산 실적 수정 |
+| DELETE | /api/results/{id} | 생산 실적 삭제 |
+| GET | /api/dashboard | 대시보드 데이터 조회 |
 
 ## DB 설계
 ```
@@ -89,9 +111,10 @@ http://localhost:8080
 ```
 src/main/java/com/mes/factory
 ├── controller
-│   └── api (예정)
+│   └── api
 ├── service
 ├── mapper
 ├── dto
-└── security
+├── security
+└── config
 ```
