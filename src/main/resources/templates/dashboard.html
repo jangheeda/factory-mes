@@ -77,28 +77,30 @@
     <div class="row">
         <div class="col-12">
             <h5>작업지시 진척률 현황</h5>
-            <table class="table table-bordered table-hover">
-                <thead class="table-dark">
-                <tr>
-                    <th>작업지시 번호</th>
-                    <th>제품명</th>
-                    <th>목표수량</th>
-                    <th>실제생산량</th>
-                    <th>진척률</th>
-                    <th>상태</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="item : ${dashboard.progressRateList}">
-                    <td th:text="${item.order_id}"></td>
-                    <td th:text="${item.product_name}"></td>
-                    <td th:text="${item.target_qty}"></td>
-                    <td th:text="${item.actual_qty}"></td>
-                    <td th:text="${item.progress_rate} + '%'"></td>
-                    <td th:text="${item.status}"></td>
-                </tr>
-                </tbody>
-            </table>
+            <div style="max-height: 400px; overflow-y: auto; border: 1px solid #444;">
+                <table class="table table-bordered table-hover mb-0">
+                    <thead class="table-dark" style="position: sticky; top: 0;">
+                    <tr>
+                        <th>작업지시 번호</th>
+                        <th>제품명</th>
+                        <th>목표수량</th>
+                        <th>실제생산량</th>
+                        <th>진척률</th>
+                        <th>상태</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item : ${dashboard.progressRateList}">
+                        <td th:text="${item.order_id}"></td>
+                        <td th:text="${item.product_name}"></td>
+                        <td th:text="${item.target_qty}"></td>
+                        <td th:text="${item.actual_qty}"></td>
+                        <td th:text="${item.progress_rate} + '%'"></td>
+                        <td th:text="${item.status}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

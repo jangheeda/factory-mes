@@ -35,6 +35,7 @@
         FROM work_order w
         JOIN product p ON w.product_id = p.product_id
         LEFT JOIN production_result r ON w.order_id = r.order_id
+        WHERE w.status != '완료'
         GROUP BY w.order_id
         ORDER BY progress_rate DESC
     </select>
