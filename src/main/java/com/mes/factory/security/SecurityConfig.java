@@ -32,6 +32,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/register").permitAll()
                         .requestMatchers("/api/**").permitAll() // 추가
+                        // 관리자만 권한 허용
+                        .requestMatchers("/product/create", "/product/edit/**", "/product/delete/**").hasRole("ADMIN")
+                        .requestMatchers("/workorder/create", "/workorder/delete/**").hasRole("ADMIN")
+                        .requestMatchers("/result/delete/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 ).formLogin(form -> form
                         .loginPage("/login")
@@ -42,7 +46,9 @@ public class SecurityConfig {
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login")
                         .permitAll()
-                );
+                ).exceptionHandling(exception -> exception
+                        .accessDeniedHandler(((request, response, accessDeniedException) ->
+                                response.sendRedirect("/?error=access"))));
         return http.build();
     }
 }
