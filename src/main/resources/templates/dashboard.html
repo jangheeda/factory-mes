@@ -10,6 +10,12 @@
 <body>
 <div layout:fragment="content">
     <h2 class="mb-4">대시보드</h2>
+    <!-- 접근 권한 없음 알럿  -->
+    <div th:if="${param.error != null}"
+         class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>접근 권한이 없습니다.</strong> 관리자에게 문의하세요.
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
 
     <!-- 작업지시 현황 -->
     <div class="row mb-4">

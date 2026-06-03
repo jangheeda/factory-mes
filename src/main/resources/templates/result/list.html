@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout/default}">
+
 
 <head>
     <title>생산 실적 목록</title>
@@ -81,7 +83,7 @@
             <td>
                 <a th:href="@{/result/edit/{id}(id=${result.resultId})}"
                    class="btn btn-sm btn-warning">수정</a>
-                <form th:action="@{/result/delete/{id}(id=${result.resultId})}"
+                <form sec:authorize="hasRole('ADMIN')" th:action="@{/result/delete/{id}(id=${result.resultId})}"
                       method="post" style="display:inline">
                     <button type="submit" class="btn btn-sm btn-danger">삭제</button>
                 </form>
