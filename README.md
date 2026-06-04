@@ -8,7 +8,7 @@
 | 분류 | 기술 |
 |------|------|
 | Backend | Java 17, Spring Boot 3.5 |
-| Security | Spring Security 6 |
+| Security | Spring Security 6, BCrypt, Role 기반 접근 제어 |
 | Database | MariaDB |
 | ORM | MyBatis |
 | View | Thymeleaf, Thymeleaf Layout Dialect |
@@ -24,12 +24,14 @@
 - **생산 실적 관리** : 실적 등록 / 조회 / 수정 / 삭제 / 불량 원인 분류 / 유효성 검사
 - **대시보드** : 작업지시 현황, 생산 진척률, 오늘의 생산 실적, 불량률 현황
 - **실시간 대시보드** : WebSocket(STOMP) 기반 실시간 업데이트 (작업지시 현황, 생산 실적, 진척률)
+- **권한 관리** : 관리자(ROLE_ADMIN) / 일반 사용자(ROLE_USER) 권한 분리, 접근 제어
 
 ## 유효성 검사
 - 회원가입 아이디 중복 체크
 - 생산 실적 작업자 필수 입력
 - 생산 실적 미래 날짜 등록 방지
 - 목표수량 초과 실적 등록 방지
+- 권한 없는 접근 시 대시보드로 리다이렉트 및 알럿 표시
 
 ## API 명세
 | Method | URL | 설명 |
