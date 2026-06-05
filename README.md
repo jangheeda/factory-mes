@@ -4,6 +4,15 @@
 제조 IT 도메인 기반의 MES(Manufacturing Execution System) 웹 애플리케이션입니다.
 공장의 제품 관리, 작업지시, 생산 실적을 통합 관리하고 대시보드로 현황을 확인할 수 있습니다.
 
+## 서비스 URL
+http://43.200.180.81:8080
+
+### 테스트 계정
+| 구분 | 아이디 | 비밀번호 |
+|------|--------|---------|
+| 관리자 | admin | 1234 |
+| 일반 사용자 | user | 1234 |
+
 ## 기술 스택
 | 분류 | 기술 |
 |------|------|
@@ -15,7 +24,8 @@
 | Frontend | Bootstrap 5 (Darkly 테마) |
 | Build | Gradle |
 | WebSocket | Spring WebSocket, STOMP, SockJS |
-| 배포 | AWS EC2 (예정) |
+| 배포 | AWS EC2 |
+| CI/CD | GitHub Actions |
 
 ## 주요 기능
 - **로그인/로그아웃** : Spring Security 기반 인증, BCrypt 비밀번호 암호화, 아이디 중복 체크
@@ -25,6 +35,7 @@
 - **대시보드** : 작업지시 현황, 생산 진척률, 오늘의 생산 실적, 불량률 현황
 - **실시간 대시보드** : WebSocket(STOMP) 기반 실시간 업데이트 (작업지시 현황, 생산 실적, 진척률)
 - **권한 관리** : 관리자(ROLE_ADMIN) / 일반 사용자(ROLE_USER) 권한 분리, 접근 제어
+- **검색/페이징** : 작업지시 및 생산 실적 검색 필터, 페이징 처리
 
 ## 유효성 검사
 - 회원가입 아이디 중복 체크
@@ -90,6 +101,7 @@ production_result (생산실적)
 ```
 
 ## 실행 방법
+### 로컬 실행
 ```bash
 # 1. 프로젝트 클론
 git clone https://github.com/jangheeda/factory-mes.git
@@ -99,8 +111,7 @@ CREATE DATABASE factory_db;
 CREATE USER 'factory'@'localhost' IDENTIFIED BY 'factory1234';
 GRANT ALL PRIVILEGES ON factory_db.* TO 'factory'@'localhost';
 
-# 3. 테이블 생성 (DBeaver 또는 MySQL 클라이언트)
-# /src/main/resources/sql/schema.sql 참고 (추후 추가 예정)
+# 3. 테이블 생성 (DBeaver 또는 MySQL 클라이언트에서 직접 실행)
 
 # 4. 프로젝트 실행
 ./gradlew bootRun
@@ -108,6 +119,11 @@ GRANT ALL PRIVILEGES ON factory_db.* TO 'factory'@'localhost';
 # 5. 브라우저 접속
 http://localhost:8080
 ```
+
+### 배포
+- AWS EC2 (Ubuntu 26.04 LTS, t3.micro)
+- GitHub Actions CI/CD 파이프라인 구축
+- main 브랜치 push 시 자동 빌드 및 배포
 
 ## 프로젝트 구조
 ```
@@ -119,4 +135,8 @@ src/main/java/com/mes/factory
 ├── dto
 ├── security
 └── config
+
+.github
+└── workflows
+    └── deploy.yml
 ```
