@@ -5,22 +5,24 @@ import com.mes.factory.dto.WorkOrderDto;
 import com.mes.factory.service.DashboardService;
 import com.mes.factory.service.ProductionResultService;
 import com.mes.factory.service.WorkOrderService;
-import lombok.Locked;
 import net.wimpi.modbus.io.ModbusTCPTransaction;
 import net.wimpi.modbus.msg.ReadMultipleRegistersRequest;
 import net.wimpi.modbus.msg.ReadMultipleRegistersResponse;
 import net.wimpi.modbus.net.TCPMasterConnection;
+import org.slf4j.LoggerFactory;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.net.InetAddress;
 import java.time.LocalDate;
+import org.slf4j.Logger;
 
 @Component
 public class ModbusScheduler {
 
     private boolean isRunning = true;
+    private static final Logger log = LoggerFactory.getLogger(ModbusScheduler.class);
 
     private final ProductionResultService productionResultService;
     private final WorkOrderService workOrderService;
@@ -108,11 +110,13 @@ public class ModbusScheduler {
                 productionResultService.insertResult(dto);
 
                 messagingTemplate.convertAndSend("/topic/dashboard", dashboardService.getDashboardData());
+                log.info("Modbus 데이터 수집 완료 - 작업지시: {}, 양품: {}, 불량: {}", orderId, actualGoodQty, defectQty);
                 System.out.println("Modbus 데이터 수집 완료 - 작업지시: " + orderId +
                         ", 양품: " + actualGoodQty + ", 불량: " + defectQty);
             }
 
         } catch (Exception e) {
+            log.info("Modbus 연결 실패 : {}", e.getMessage());
             System.out.println("Modbus 연결 실패 : " + e.getMessage());
         } finally {
             if (connection != null) {
