@@ -71,4 +71,14 @@ public class ProductionResultService {
     public int getTotalPages(int totalCount, int pageSize) {
         return (int) Math.ceil((double) totalCount / pageSize);
     }
+
+    // 작업지시별 총 양품 수량 조회
+    public int getTotalGoodQtyByOrderId(int orderId) {
+        return productionResultMapper.selectTotalGoodQtyByOrderId(orderId);
+    }
+
+    // 유효성 검사 없이 바로 등록 (PLC 자동수집용)
+    public void insertResult(ProductionResultDto dto) {
+        productionResultMapper.insertResult(dto);
+    }
 }
